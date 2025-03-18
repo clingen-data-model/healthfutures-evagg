@@ -35,7 +35,13 @@ class PaperQueryApp(IEvAggApp):
             logger.info(f"Found {len(papers)} papers for {term}")
 
             # Extract observation fieldsets for each paper.
+            # pmid_exclude_list = ["35991533", "19940018", "35813615", "29231814", "31796734"]
+            # pmid_exclude_list = ["35813615", "29231814", "19940018", "35991533", "37107657", "31796734"]
+            pmid_exclude_list = ["35991533"]
             for paper in papers:
+                if paper.props["pmid"] in pmid_exclude_list:
+                    logger.warning(f"Skipping paper with PMID {paper.props['pmid']}")
+                    continue
                 extracted_fieldsets = self._extractor.extract(paper, term)
                 output_fieldsets.extend(extracted_fieldsets)
 
